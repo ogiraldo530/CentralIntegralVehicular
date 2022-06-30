@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo">
+
+	<header th:replace="layout/layout :: header"></header>
+		<!--BUSCADOR-->
+	<div class="d-flex  mb-2 mt-2 ">
+		<div class="col-sm-11 input-group">
+			<form th:replace="layout/layout :: buscador"></form>
+
+			<div class="col-sm-5 mr-5 ">
+
+				<a th:href="@{/central-integral-vehicular/listarArticulo}" class="btn btn-light card-text botontab active">
+				<i class="bi bi-clipboard-check"></i>
+					Articulo</a>
+				<a th:href="@{/central-integral-vehicular/listarEntradaArticulo}" class="btn btn-light card-text">
+				<i class="bi bi-clipboard-plus"></i>
+					Entrada</a>
+				<a th:href="@{/central-integral-vehicular/listarSalidaArticulo}" class="btn btn-light card-text">
+				<i class="bi bi-clipboard-minus"></i>
+					Salida</a>
+
+			</div>
+
+		</div>
+
+		<div class="col-12 ml-5">
+			<a th:href="@{/central-integral-vehicular/crearArticulo}"><button class="btn btn-light  ">
+					<span class="material-icons-outlined search">person_add</span>
+				</button></a>
+
+		</div>
+	</div>
+	<!--BUSCADOR-->
+	<div  class="text-white ml-4 " th:unless="${articulo.size}">
+		<h2 th:text="${vacio}"></h2>
+		<small class=" fs-5 text-white" th:text="${vacioInfo}"></small>
+	</div>
+
+	<div th:if="${articulo.size}">
+		<h2  class="ml-3 text-white" th:text="${resultados}"></h2>
+
+		<!--ARTICULO-->
+	<div class="container col-12">
+				<table class="table crud table-hover justify-content-center container col-12  fs-5 ">
+			<thead>
+				<tr>
+
+					<th class="col-sm-2">Descripcion</th>
+					<th class="col-xs-1">Categoria</th>
+					<th class="col-xs-1">Entrada</th>
+					<th class="col-xs-1">Unidad</th>
+					<th class="col-xs-1">Salida</th>
+					<th class="col-xs-1">Stock</th>
+					<th class=" col-sm-2 text-center">Valor Compra</th>
+					<th class=" col-xs-1 text-center">Porcentaje Utilidad</th>
+					<th class=" col-sm-2 text-center">Margen Utilidad</th>
+					<th class=" col-sm-2 text-center">Valor Venta</th>
+					<th class=" col-xs-1 text-center">Importe inventario</th>
+					<th class=" col-sm-2 text-center">Acción</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr class="table-borderless" th:each="articulo: ${articulo}">
+
+					<td th:text="${articulo.descripcion}" class="text-break"></td>
+					<td th:text="${articulo.categoria}"></td>
+					<td th:text="${articulo.entrada}" class="text-center"></td>
+					<td th:text="${articulo.unidadMedida}"></td>
+					<td th:text="${articulo.salida}" class="text-center"></td>
+					<td th:text="${articulo.stock}" class="text-center"></td>
+					<td th:text="${articulo.precioCompra()}" class="text-center text-break"></td>
+					<td th:text="${articulo.utilidad}" class="text-center"></td>
+					<td th:text="${articulo.margenUtilidadListar()}" class="text-center"></td>
+					<td th:text="${articulo.precioVentaListar()}" class="text-center text-break"></td>
+					<td th:text="${articulo.importeInventarioListar()}" class="text-center"></td>
+
+
+					<td class="text-center"><a class="btn btn-dark btn-xs"
+							th:href="@{/central-integral-vehicular/crearArticulo/} + ${articulo.id}"><span
+								class="mt-1 material-icons-outlined">border_color</span></a>
+						<a th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'"
+						class="btn btn-dark btn-xs" th:href="@{/central-integral-vehicular/eliminarArticulo/} + ${articulo.id}"
+							onclick="return confirm('Está Seguro que Desea Eliminar?');"><span
+								class="mt-1 material-icons-outlined">person_remove</span></a>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+	</div>
+
+	
+
+</div>
+	
+	<h4 class="card-title mt-5 text-center">
+		<a th:href="@{/central-integral-vehicular/listarArticulo}" class="btn btn-light btn-xs mb-5">
+		<span class="material-icons-outlined volver ">reply</span></a>
+	</h4>
+	
+	<br>
+	<br>
+	<br>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

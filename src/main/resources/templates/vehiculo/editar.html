@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo7">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container   col-6 py-4">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong th:text="${titulo}"></strong></div>
+			<div class="card-body resto">
+
+				<form th:action="@{/central-integral-vehicular/editarVehiculo}" th:object="${vehiculo}" method="post">
+
+					<div class="form-group">
+
+					<div class="input-group mt-2">
+							<label class=" form-control col-sm-2">Placa</label>
+							<div class="">
+								<input type="text" th:field="*{placa}" class="form-control" id="placa" name="placa" />
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}"></small>
+							</div>
+
+							<label class="form-control ml-4 col-sm-2">Marca</label>
+							<div class="">
+								<input type="text" th:field="*{marca}" class="form-control" id="marca" name="marca" />
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></small>
+							</div>
+						</div>
+						<div class="input-group mt-4 ">
+							<label class="form-control col-sm-2">Color</label>
+							<div class="">
+								<input type="text" th:field="*{color}" class="form-control" id="color" name="color" />
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></small>
+							</div>
+
+							<label class="form-control ml-4 col-sm-2">Kilometraje</label>
+							<div class="">
+								<input type="text" th:field="*{km}" class="form-control" id="km" name="km" />
+							</div>
+						</div>
+						<div class="input-group mt-4">
+							<label class="form-control col-sm-2">Horas</label>
+							<div class="">
+								<input type="text" th:field="*{horas}" class="form-control" id="horas" name="horas" />
+							</div>
+
+							<label class="form-control ml-4 col-sm-2">Modelo</label>
+							<div class="">
+								<input type="text" th:field="*{modelo}" class="form-control" id="modelo"
+									name="modelo" />
+									<small class="form-text text-danger" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></small>
+							</div>
+						</div>
+						<div class="input-group mt-4">
+
+								<label class="form-control col-4">Propietario</label>
+
+							<input th:value="${vehiculo.cliente.razonSocial}" class="form-control col-9 mr-3"
+								disabled='disabled' />
+
+	
+						</div>
+						<h4 class="card-title mt-2 text-center">
+
+							<button type="submit" class="btn"><span class="mt-1 material-icons-outlined">send</span>
+								<p>Enviar</p>
+							</button>
+						</h4>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout:: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

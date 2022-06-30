@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="crearfondo">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container   col-6 py-4">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong th:text="${titulo}"></strong></div>
+			<div class="card-body resto">
+			
+		
+				<form th:action="@{/central-integral-vehicular/crearCliente}" th:object="${cliente}" method="post">
+
+					<div class="form-group">
+
+
+						<label class="col-sm-4 col-form-label">Razón Social</label>
+						<div class="col-sm-12">
+							<input type="text" th:field="*{razonSocial}" class="form-control" id="razonSocial"
+								name="razonSocial" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}"></small>
+						</div>
+
+						<label class="col-sm-2 col-form-label">NIT</label>
+						<div class="col-sm-12">
+							<input type="text" th:field="*{nit}" class="form-control" id="nit" name="nit" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('nit')}" th:errors="*{nit}"></small>
+						</div>
+
+						<label class="col-sm-2 col-form-label">Télefono</label>
+						<div class="col-sm-12">
+							<input type="text" th:field="*{telefono}" class="form-control" id="telefono" name="telefono" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></small>
+						</div>
+
+						<h4 class="card-title mt-2 text-center">
+
+							<button type="submit" class="btn"><span class="mt-1 material-icons-outlined">send</span>
+								<p>Enviar</p>
+							</button>
+						</h4>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

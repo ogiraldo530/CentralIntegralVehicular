@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header">
+				<div class="d-flex">
+					<img src="/img/logo.png" alt="" width="250px" class="mr-4 mt-2">
+				
+					<h4 class="ml-5 mt-5">CENTRAL INTEGRAL VEHICULAR S.A.S</h4>			
+				</div>
+				<p class="text-center">NIT:901.319.875-7</p>
+				
+			</div>
+			<div class="card-body">
+
+
+				<div th:if="${#lists.isEmpty(vehiculo.cotizaciones)}" class="alert alert-info my-4"
+					th:text="'No hay cotizaciones asignadas para el vehiculo con placa ' + ${vehiculo.placa} ">
+
+				</div>
+
+				<table class="table table-bordered  mt-3">
+					<thead class="table-info">
+						<tr>
+							<th colspan="3" class="text-center">HOJA DE VIDA E HISTORICO VEHICULAR</th>
+						</tr>
+
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="text-center"><strong>Datos del Cliente</strong></td>
+							<td colspan="2" class="text-center"><strong>Datos del vehiculo</strong></td>
+						</tr>
+
+						<tr>
+							<td th:text="'RAZÓN SOCIAL: ' + ${vehiculo.cliente.razonSocial}"></td>
+
+							<td th:text="'PLACA: ' +${vehiculo.placa}"></td>
+							<td th:text="'KM: ' +${vehiculo.km}"></td>
+							</td>
+
+						</tr>
+						<tr>
+							<td th:text="'NIT: ' + ${vehiculo.cliente.nit}"></td>
+							<td th:text="'MARCA: ' + ${vehiculo.marca}"></td>
+							<td th:text="'HORAS: ' + ${vehiculo.horas}"></td>
+
+						</tr>
+						<tr>
+							<td th:text="'TELÉFONO: ' +${vehiculo.cliente.telefono}"></td>
+							<td th:text="'COLOR: ' +${vehiculo.color}"></td>
+							<td th:text="'MODELO: ' +${vehiculo.modelo}"></td>
+
+
+						</tr>
+					</tbody>
+				</table>
+
+				<div th:each="cotizaciones: ${vehiculo.cotizaciones}" th:if="${cotizaciones.estado == 'Cerrado'}">
+
+					<table class="table table-bordered ">
+
+						<thead>
+							<tr>
+								<th class="table-info">FECHA INGRESO</th>
+								<th th:text="${cotizaciones.fecha}"> </th>
+								<th class="table-info">FECHA SALIDA</th>
+								<th th:text="${cotizaciones.ordenDeTrabajo.fechaSalida}"> </th>
+								<th class="table-info">ORDEN DE TRABAJO</th>
+								<th class="text-danger fs-4 text-center" colspan="2"
+									th:text="'OT- ' + ${cotizaciones.ordenDeTrabajo.id}"> </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="table-info">
+								<td class="text-center"> <strong> CANTIDAD </strong></td>
+								<td><strong>DESCRIPCIÓN </strong></td>
+								<td class="text-center"> <strong>VALOR UNITARIO<strong></td>
+								<td class="text-center"><strong>VALOR NETO<strong></td>
+								<td class="text-center"><strong>IVA<strong></td>
+
+								<td class="text-center"><strong>DESCUENTO<strong></td>
+								<td class="text-center"><strong>VALOR TOTAL<strong></td>
+
+							</tr>
+
+							<tr th:each="linea: ${cotizaciones.items}">
+
+								<td class="text-center" th:text="${linea.cantidad}"></td>
+								<td th:text="${linea.articulo.descripcion}"></td>
+								<td class="text-end" th:text="'$ '+${linea.articulo.precioCompra()}"></td>
+								<td class="text-end" th:text="'$ '+${linea.subTotalMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea.ivaMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea.descuentoMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea.calcularImporteOrdenMostrar()}"></td>
+
+							</tr>
+							<tr th:each="linea2: ${cotizaciones.itemsServicio}">
+
+								<td class="text-center" th:text="${linea2.cantidad}"></td>
+								<td th:text="${linea2.servicio.descripcion}"></td>
+								<td class="text-end" th:text="'$ '+${linea2.servicio.precio()}"></td>
+								<td class="text-end" th:text="'$ '+${linea2.subTotalMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea2.ivaMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea2.descuentoMostrar()}"></td>
+								<td class="text-end" th:text="'$ '+${linea2.calcularImporteOrdenMostrar()}"></td>
+
+							</tr>
+							<tr>
+								<td colspan="2" class="text-center"><strong>TOTAL</strong></td>
+								<td >
+									<strong>
+										<p class="text-end" th:text="'$ '+${cotizaciones.totalPrecioUnitariosMostrar()}"> </p>
+									</strong>
+								</td>
+								<td class="text-end" >
+									<strong>
+										<p th:text="'$ '+${cotizaciones.sumaSubTotalesMostrar()}"> </p>
+									</strong>
+								</td>
+								<td class="text-end" >
+
+									<strong>
+										<p th:text="'$ '+${cotizaciones.getIvaNetoMostrar()}"></p>
+									</strong>
+								</td>
+
+								<td >
+
+									<strong>
+										<p class="text-end" th:text="'$ '+${cotizaciones.getDescuentoNetoMostrar()}" > </p  >
+									</strong>
+								</td>
+								<td >
+									<strong>
+										<p class="text-end fs-5" th:text="'$ '+${cotizaciones.getTotalPagarMostrar()}"> </p >
+									</strong>
+								</td>
+							</tr>
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+	</div>
+
+
+</body>
+
+</html>

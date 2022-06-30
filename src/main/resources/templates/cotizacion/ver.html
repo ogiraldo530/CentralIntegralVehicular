@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header">
+				<div class="d-flex">
+					<img src="/img/logo.png" alt="" width="250px" class="mr-4 mt-2">
+				
+					<h4 class="ml-5 mt-5">CENTRAL INTEGRAL VEHICULAR S.A.S</h4>			
+				</div>
+				<p class="text-center">NIT:901.319.875-7</p>
+				
+				<strong> <p class="text-end mr-5 text-danger fs-2" th:text="'COT- '+ ${cotizacion.id}"></p> </strong>
+			</div>
+			<div class="card-body">
+
+
+				<table class="table table-bordered  mt-3">
+					<thead>
+						<tr>
+							<th>Datos del Cliente</th>
+							<th colspan="2" class="text-center">Datos del vehiculo</th>
+							<th class="text-center">Datos de la cotización</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="'RAZÓN SOCIAL: ' + ${cotizacion.vehiculo.cliente.razonSocial}"></td>
+
+							<td th:text="'PLACA: ' +${cotizacion.vehiculo.placa}"></td>
+							<td th:text="'KM: ' +${cotizacion.vehiculo.km}"></td>
+							<td colspan="2" th:text="'FECHA Y HORA: '+ ${cotizacion.fecha} + ' ' +${cotizacion.hora}">
+							</td>
+
+						</tr>
+						<tr>
+
+
+							<td th:text="'NIT: ' + ${cotizacion.vehiculo.cliente.nit}"></td>
+							<td th:text="'MARCA: ' + ${cotizacion.vehiculo.marca}"></td>
+							<td th:text="'HORAS: ' +${cotizacion.vehiculo.horas}"></td>
+							<td>
+								<a th:text="'VENCE: '+ ${cotizacion.fechaVencimiento}"
+									th:if="${cotizacion.fechaVencimiento != null}"></a>
+
+								<p th:if="${cotizacion.fechaVencimiento == null} " class="text-danger">
+									VENCE: FECHA NO ESPECIFICADA
+								</p>
+							</td>
+
+
+						</tr>
+						<tr>
+
+							<td th:text="'TELÉFONO: ' +${cotizacion.vehiculo.cliente.telefono}"></td>
+							<td th:text="'COLOR: ' +${cotizacion.vehiculo.color}"></td>
+							<td th:text="'MODELO: ' +${cotizacion.vehiculo.modelo}"></td>
+							<td>
+								<a th:text="'FORMA DE PAGO: '+ ${cotizacion.formaPago}"
+									th:if="${cotizacion.formaPago != 'Sin_seleccionar'}"></a>
+
+								<p th:if="${cotizacion.formaPago == 'Sin_seleccionar'} " class="text-danger">
+									FORMA DE PAGO: NO ESPECIFICADA
+								</p>
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+
+
+
+				<div class="alert alert-info my-4"
+					th:if="${#lists.isEmpty(cotizacion.items) && #lists.isEmpty(cotizacion.itemsServicio) }"
+					th:text="'No hay lineas para la cotizacion COT- ' +${cotizacion.id}">
+				</div>
+
+
+				<table class="table table-bordered my-3">
+					<thead class="table-info">
+						<tr>
+							<th class="text-center">Codigo</th>
+							<th>Descripción</th>
+							<th class="text-center">Cantidad</th>
+							<th class="text-center">Precio</th>
+							<th class="text-center">Precio Neto</th>
+							<th class="text-center">Descuento</th>
+							<th class="text-center">Iva</th>
+							<th class="text-center">Total</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="linea: ${cotizacion.items}">
+							<td class="text-center" th:text="${linea.articulo.codigo}"></td>
+							<td th:text="${linea.articulo.descripcion}"></td>
+							<td class="text-center" th:text="${linea.cantidad}"></td>
+							<td class="text-end" th:text="'$  ' + ${linea.articulo.precioCompra()}"></td>
+								<td class="text-end" th:text="'$  ' + ${linea.subTotalMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea.descuentoMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea.ivaMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea.calcularImporteOrdenMostrar()}"></td>
+
+						</tr>
+						<tr th:each="linea2: ${cotizacion.itemsServicio}">
+							<td class="text-center" th:text="${linea2.servicio.codigo}"></td>
+							<td th:text="${linea2.servicio.descripcion}"></td>
+							<td class="text-center" th:text="${linea2.cantidad}"></td>
+							<td class="text-end" th:text="'$  ' +${linea2.servicio.precio()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea2.subTotalMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea2.descuentoMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea2.ivaMostrar()}"></td>
+							<td class="text-end" th:text="'$  ' +${linea2.calcularImporteOrdenMostrar()}"></td>
+						</tr>
+						<tr>
+							<td colspan="4">Elaboró: </td>
+
+							<td colspan="2">SUBTOTAL</td>
+							<td colspan="2" class="text-end" th:text="'$ '+ ${cotizacion.getTotalNetoMostrar}">
+						</tr>
+
+						<td colspan="4"> Autorizó: </td>
+
+						<td colspan="2">IVA NETO</td>
+						<td colspan="2" class="text-end" th:text="'$ '+${cotizacion.getIvaNetoMostrar}"> </td>
+						</tr>
+						<td colspan="4">Firma y sello </td>
+
+						<td colspan="2"><strong> TOTAL PAGAR </strong></td>
+						<td colspan="2" >
+						<strong>
+						<p  class="text-end" th:text="'$ '+${cotizacion.getTotalPagarMostrar}"></p>
+						</strong>
+						</td>
+						</tr>
+
+
+
+					</tbody>
+				</table>
+				<p class="text-center"> SOMOS SU ALIADO, BRINDANDO SOLUCIONES </p>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+
+</body>
+
+</html>

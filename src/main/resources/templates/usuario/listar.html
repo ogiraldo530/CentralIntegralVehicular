@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo13">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container col-6 py-4">
+
+		<div class="container">
+			<h4 class="card-title ">
+				<a th:href="@{/central-integral-vehicular/crearUsuario}" class="btn btn-dark btn-xs"><i
+						class="bi bi-person-plus-fill"></i></a>
+			</h4>
+
+
+		</div>
+
+		<table class="table crud table-hover justify-content-center container   fs-5">
+			<thead>
+				<tr>
+					<th class="col-sm-1">ID</th>
+					<th class="col-sm-1">Usuario</th>
+					<th class="col-sm-1 text-center">Rol</th>
+					<th class="col-sm-2 text-center">Acción</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr  class="table-borderless" th:each="usuario: ${usuarios}">
+					<td th:text="${usuario.id}"></td>
+					<td th:text="${usuario.username}"></td>	
+					<td class="text-center">
+						<th:block th:each="rol,iter: ${usuario.rol}">
+							<label th:text="${rol.nombre}"></label>
+
+							<th:block th:if="${!iter.last}"><br> </th:block>
+						</th:block>
+					</td>
+
+
+
+					<td class="text-center"><a class="btn btn-dark btn-xs"
+							th:href="@{/central-integral-vehicular/crearUsuario/} + ${usuario.id}"><span
+								class="mt-1 material-icons-outlined">border_color</span></a>
+						<a class="btn btn-dark btn-xs" th:href="@{/central-integral-vehicular/eliminarUsuario/} + ${usuario.id}"
+							onclick="return confirm('Está Seguro que Desea Eliminar?');"><span
+								class="mt-1 material-icons-outlined">person_remove</span></a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<nav th:replace="paginator-nav :: paginator"></nav>
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

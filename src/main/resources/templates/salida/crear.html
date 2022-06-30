@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="crearfondo">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container   col-6 py-2">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong th:text="${titulo}"></strong></div>
+			<div class="card-body resto">
+
+				<form th:action="@{/central-integral-vehicular/crearSalidaArticulo}" th:object="${salidaArticulo}" method="post">
+
+					<div class="ml-3 mr-3">
+
+						<input type="text" th:field="*{fecha}" hidden class="form-control" id="fecha" name="fecha" />
+
+						<label class="col-form-label ">Articulo</label>
+						<select th:field="${salidaArticulo.articulo}" class="form-control form-select mt-2 col-sm-12">
+							<option th:value="null"> Seleccione el articulo
+							</option>
+							<option th:each="articulo :${articulo}" th:value="${articulo.id}"
+								th:text="${articulo.descripcion}">
+							</option>
+						</select>
+						<small class="form-text text-danger ml-1" th:if="${#fields.hasErrors('articulo')}"
+							th:errors="*{articulo}"></small>
+
+
+						<label class="col-form-label ">Vehiculo</label>
+						<select th:field="${salidaArticulo.vehiculo}" class="form-control form-select mt-2 col-sm-12">
+							<option th:value="null"> Seleccione el vehiculo
+							</option>
+							<option th:each="vehiculo :${vehiculo}" th:value="${vehiculo.id}"
+								th:text="${vehiculo.placa}">
+							</option>
+						</select>
+						<small class="form-text text-danger ml-1" th:if="${#fields.hasErrors('vehiculo')}"
+							th:errors="*{vehiculo}"></small>
+
+					</div>
+					<div class="d-flex">
+						<div class="col-sm-6">
+
+
+							<label class="col-form-label  ">Cantidad</label>
+
+							<input type="text" th:field="*{cantidad}" class="form-control" id="cantidad"
+								name="cantidad" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('cantidad')}"
+								th:errors="*{cantidad}"></small>
+						</div>
+						<div class="col-sm-6">
+							<label class="col-form-label ">Responsable</label>
+
+							<input type="text" th:field="*{responsable}" class="form-control" id="responsable"
+								name="responsable" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('responsable')}"
+								th:errors="*{responsable}"></small>
+
+						</div>
+
+					</div>
+
+					<h4 class="card-title mt-2 text-center">
+
+						<button type="submit" class="btn"><span class="mt-1 material-icons-outlined">send</span>
+							<p>Enviar</p>
+						</button>
+					</h4>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

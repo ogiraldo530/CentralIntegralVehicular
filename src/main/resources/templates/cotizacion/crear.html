@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head">
+
+</head>
+
+<body class="crearfondo">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container ">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong>Agregar Cotizacion</strong></div>
+			<div class="card-body ">
+
+				<form th:action="@{/central-integral-vehicular/crearCotizacion/}" th:object="${cotizacion}" method="post">
+
+					<div class=" d-flex justify-content-center">
+
+
+						<div class="col-3 mt-1">
+							<label class="cc" th:text="'Propietario Vehiculo:'"></label>
+
+							<input th:value="${cotizacion.vehiculo.cliente.razonSocial}" class="form-control"
+								disabled='disabled' />
+						</div>
+
+						<div class="col-2 mt-1">
+							<label class="cc" th:text="'Placa:'"></label>
+
+							<input th:value="${cotizacion.vehiculo.placa}" class="form-control" disabled='disabled' />
+						</div>
+
+						<div class="col-2 mt-1">
+							<label class="cc" th:text="'Modelo:'"></label>
+
+							<input th:value="${cotizacion.vehiculo.modelo}" class="form-control" disabled='disabled' />
+						</div>
+
+						<div class="col-3 mt-1">
+							<label class="col-form-label  ">Fecha de vencimiento:</label>
+
+							<input type="date" th:field="*{fechaVencimiento}" class="form-control" />
+
+
+						</div>
+
+
+						<!-- Pago -->
+						<div class="col-2 mt-1">
+							<label class="col-form-label ">Forma de pago:</label>
+							<select th:field="${cotizacion.formaPago}" class="form-select col-sm-12 ">
+
+								<option th:value="Sin_seleccionar">
+									Seleccione
+								</option>
+								<option th:value="Credito" th:text="Credito">
+								</option>
+								<option th:value="Contado" th:text="Contado">
+								</option>
+							</select>
+
+							<!-- Pago -->
+
+
+						</div>
+					</div>
+
+
+
+					<!-- Articulo -->
+
+
+					<label for="buscar_articulo" class="col-sm-12 mt-3 col-form-label"
+						th:text="'Buscar articulo:'"></label>
+					<div class="col-sm-4  ">
+						<input type="text" name="buscar_articulo" id="buscar_articulo" class="form-control mb-3 " />
+					</div>
+
+					<!-- Articulo -->
+					<!-- Alerta -->
+					<div class="alert alert-dark col-12  text-center" role="alert"><strong>
+							Articulos</strong>
+					</div>
+					<!-- Alerta -->
+
+
+					<table th:replace="cotizacion/plantilla-items-articulos :: itemsCotizacionArticulo"></table>
+
+					<table id="cargarItemArticulos" class=" table table-hover  justify-content-center col-12 mb-4">
+
+						<thead class=" cruddd text-white ">
+
+
+
+							<tr>
+								<th class="col-xs-1 ">Código</th>
+								<th class="col-sm-3">Descripcion</th>
+								<th class="col-sm-1">Cantidad</th>
+								<th class="col-sm-2 text-center">Precio Unitario</th>
+								<th class="col-sm-1">Descuento</th>
+								<th class="col-sm-1">% IVA</th>
+								<th class="col-sm-1">Valor IVA</th>
+								<th class="col-sm-2 text-center">Precio Total</th>
+								<th class="col-xs-1 text-center">Eliminar</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+
+					<h5 hidden>Iva <span class="badge badge-secondary" id="iva_total_articulo">0</span></h5>
+					<h5 hidden>Total Articulos<span class="badge badge-secondary" id="gran_total_articulo">0</span></h5>
+
+					<!-- Servicios -->
+
+
+					<label for="buscar_servicio" class="col-sm-12 mt-3 col-form-label  "
+						th:text="'Buscar servicio:'"></label>
+					<div class="col-sm-4 ">
+						<input type="text" name="buscar_servicio" id="buscar_servicio" class="form-control mb-3" />
+
+					</div>
+
+					<!-- Alerta -->
+					<div class="alert alert-danger col-12  text-center" role="alert"><strong>
+							Servicios</strong>
+					</div>
+					<!-- Alerta -->
+					<table th:replace="cotizacion/plantilla-items-servicios :: itemsCotizacionServicio"></table>
+
+					<table id="cargarItemServicio" class="table  table-hover justify-content-center col-12 ">
+
+						<thead class="crudd text-white">
+
+
+							<tr>
+								<th class="col-xs-1">Código</th>
+								<th class="col-sm-3">Descripcion</th>
+								<th class="col-sm-1">Cantidad</th>
+								<th class="col-sm-2 text-center">Precio Unitario</th>
+								<th class="col-sm-1">Descuento</th>
+								<th class="col-sm-1">IVA</th>
+								<th class="col-sm-1">Valor IVA</th>
+								<th class="col-sm-2 text-center">Precio Total</th>
+								<th class="col-xs-1 text-center">Eliminar</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+
+					<h5 hidden>Iva <span class="badge badge-secondary" id="iva_total_servicio">0</span></h5>
+					<h5 hidden>Total Servicios<span class="badge badge-secondary" id="gran_total_servicio">0</span></h5>
+					<!-- Servicios -->
+
+					<div class="d-flex  justify-content-center ">
+						<br>
+						<h5 class="mt-5 alert alert-dark">Valor Neto <span class="badge badge-secondary"
+								id="valor_neto">0</span></h5>
+						<h5 class="ml-5  alert alert-dark mt-5">Iva Neto <span class="badge badge-secondary"
+								id="iva_neto">0</span></h5>
+						<h5 class="ml-5  alert alert-danger mt-5">Total a Pagar <span class="badge badge-secondary"
+								id="total_pagar">0</span></h5>
+
+					</div>
+					<h4 class="card-title  text-center">
+
+						<button type="submit" th:value="${titulo}" class="btn"><span
+								class="mt-1 material-icons-outlined">send</span>
+							<p>Enviar</p>
+						</button>
+					</h4>
+
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<br><br><br>
+		<footer class="bg-light">
+		<div class="container">
+			<div class="row py-4">
+				<div class="col-12 text-center">
+					<a style="text-decoration: none" class="text-dark fw-bold">©
+						2021 Copyright: </a>
+					<a style="text-decoration: none">Orlando Steven Giraldo Barrera</a>
+
+			<br>
+					 <a style="text-decoration: none" class="text-dark fw-bold">Powered by: </a> 
+						 <a href="https://spring.io/tools" >Spring
+					Boot, </a><a href="https://www.freepik.es"> Freepik, </a><a href="https://getbootstrap.com/docs/5.1/getting-started/introduction/" >Bootstrap</a> & <a href="https://www.thymeleaf.org/">Thymeleaft</a>
+					
+				
+					
+				</div>
+			</div>
+		</div>
+
+	</footer>
+	<!-- Footer -->
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+
+</body>
+
+</html>

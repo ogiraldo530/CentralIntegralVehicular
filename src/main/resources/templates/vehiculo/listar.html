@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo3">
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="d-flex container col-sm-10 mb-2">
+		<div class="col-sm-10 ml-4">
+			<form th:replace="layout/layout :: buscador"></form>
+		</div>
+
+	</div>
+
+	<table class="table crud table-hover justify-content-center container  fs-5">
+		<thead>
+			<tr>
+				<th class="col-sm-1 text-center">Información</th>
+				<th class="col-sm-1">Placa</th>
+				<th class="col-sm-1">Marca</th>
+				<th class="col-sm-1">Color</th>
+				<th class=" col-sm-1 text-center">Kilometraje</th>
+				<th class="col-sm-1 text-center">Horas</th>
+				<th class="col-sm-1 text-center">Modelo</th>
+				<th class="col-sm-2 text-center">Propietario</th>
+				<th class="col-sm-1 text-center">Crear Cotización</th>
+				<th class=" col-sm-2 text-center">Acción</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="table-borderless" th:each="vehiculos: ${vehiculos}">
+
+				
+				<td class="text-center "><a class="btn btn-dark btn-xs ml-3"
+						th:href="@{/central-integral-vehicular/verVehiculo/} + ${vehiculos.id}"><span
+							class="mt-1  material-icons-outlined">car_crash</span></a></td>	
+				
+				
+			
+				<td th:text="${vehiculos.placa}"></td>
+				<td th:text="${vehiculos.marca}"></td>
+				<td th:text="${vehiculos.color}"></td>
+				<td th:text="${vehiculos.km}" class="text-center"></td>
+				<td th:text="${vehiculos.horas}" class="text-center"></td>
+				<td th:text="${vehiculos.modelo}" class="text-center"></td>
+				<td class="text-center">
+					<th:block th:each="cliente,iter: ${vehiculos.cliente}">
+						<label th:text="${cliente.razonSocial}"></label>
+
+						<th:block th:if="${!iter.last}"><br> </th:block>
+					</th:block>
+				</td>
+				<td class="text-center"><a class="btn btn-danger btn-xs ml-3"
+						th:href="@{'/central-integral-vehicular/crearCotizacion/'} + ${vehiculos.id}"><span
+							class="mt-1  material-icons-outlined">add_to_photos</span></a></td>	
+							
+																													
+									
+				<td class="text-center"><a class="btn btn-dark btn-xs"
+						th:href="@{/central-integral-vehicular/editarVehiculo/} + ${vehiculos.id}"><span
+							class="mt-1 material-icons-outlined">border_color</span></a>
+					<a th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'"
+					class="btn btn-dark btn-xs" th:href="@{/central-integral-vehicular/eliminarVehiculo/} + ${vehiculos.id}"
+						onclick="return confirm('¿Está eeguro que desea eliminar?');"><span
+							class="mt-1 material-icons-outlined">person_remove</span></a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<nav th:replace="paginator-nav :: paginator"></nav>
+
+	<footer class="bg-light fixed-bottom">
+		<div class="container ">
+			<div class="row py-4">
+				<div class="col-12 text-center">
+					<p class="mb-0 lead text-dark">
+						STEVEN GIRALDO BARRERA
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</footer>
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+</body>
+
+</html>

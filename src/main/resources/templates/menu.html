@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+	<!--Cards-->
+	
+<div th:if="${session.usuario != null}"  class="alert alert-warning alert-dismissible fade show fixed-top alerta" role="alert">
+  <a>Bienvenido</a> <strong th:text="${session.usuario.username}"> </strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+	<!--Cards-->
+	<br><br>
+
+	
+
+	<!--Cards-->
+	<div class="container">
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+		
+		<a th:href="@{/central-integral-vehicular/listarServicio}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">design_services</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Servicios</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+			
+			<a th:href="@{/central-integral-vehicular/listarCliente}"class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">local_library</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Cliente</h5>
+					
+					</div>
+				</div>
+			</div>
+		</a>
+		
+		
+		<a th:href="@{/central-integral-vehicular/listarVehiculo}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">minor_crash</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Vehiculo</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+		
+			<a th:href="@{/central-integral-vehicular/listarOrdenDeTrabajo}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">list_alt</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Orden de Trabajo</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+		
+			<a th:href="@{/central-integral-vehicular/listarHerramienta}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">build</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Herramientas</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+			<a th:href="@{/central-integral-vehicular/listarArticulo}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">newspaper</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Articulos</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+		
+		
+		
+		<div class="container" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">
+		<a th:href="@{/central-integral-vehicular/listarUsuario}" class="text-decoration-none text-dark">
+			<div class="col">
+				<div class="card">	
+					<span style="font-size: 80px;" class="material-icons-outlined mt-1  text-center">account_box</span>
+					<div class="card-body">
+						<h5 class="card-title text-center">Administrar Usuario</h5>
+						
+					</div>
+				</div>
+			</div>
+		</a>
+			
+		</div>
+		
+		
+		</div>
+	</div>
+	<br><br><br><br><br><br>
+	
+	<!--BUSCADOR-->
+<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

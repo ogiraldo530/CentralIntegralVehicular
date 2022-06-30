@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo15">
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="d-flex col-sm-11 mb-2 ml-1">
+		<div class="col-sm-10 ml-4">
+			<form th:replace="layout/layout :: buscador"></form>
+		</div>
+	</div>
+
+	<table class="table crud table-hover justify-content-center col-11 container fs-5">
+		<thead>
+			<tr>
+				<th class="col-sm-1 text-center">Información</th>
+				<th class="col-sm-1 text-center">Placa</th>
+				<th class="col-sm-2 text-center">Propietario</th>
+				<th class="col-sm-2 text-center">Código Cotización</th>
+				<th class="col-sm-2 text-center">Fecha Salida Vehiculo</th>
+				<th class="col-sm-1 text-center">Cerrar</th>
+				<th class=" col-sm-2 text-center"  th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">Acción</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="table-borderless" th:each="ordenTrabajo: ${ordenTrabajo}">
+
+
+
+				<td class="text-center "><a class="btn btn-dark btn-xs ml-3"
+						th:href="@{/central-integral-vehicular/verOrdenDeTrabajo/} + ${ordenTrabajo.id}"><span
+							class="mt-1  material-icons-outlined">car_crash</span></a></td>
+				<td th:text="${ordenTrabajo.cotizacion.vehiculo.placa}"></td>
+				<td class=" text-center" th:text="${ordenTrabajo.cotizacion.vehiculo.cliente.razonSocial}"></td>
+				<td class="text-center" th:text="'COT - '+${ordenTrabajo.cotizacion.id}"></td>
+				<td class="text-center" th:text="${ordenTrabajo.fechaSalida}"></td>
+				<td class="text-center"><a class="btn btn-dark  btn-xs"
+						th:if="${ordenTrabajo.cotizacion.estado == 'Enviado'} "
+						th:href="@{/central-integral-vehicular/cerrarCotizacion/} + ${ordenTrabajo.cotizacion.id}"
+						onclick="return confirm('¿Está seguro de cerrar esta orden de trabajo?');">
+						<span class="mt-1 material-icons-outlined">close_fullscreen</span>
+					</a>
+					<p th:if="${ordenTrabajo.cotizacion.estado == 'Cerrado'}" class="text-danger">Cerrada</p>
+				</td>
+
+
+
+				<td class="text-center" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">
+				
+					<a class="btn btn-dark btn-xs" th:if="${ordenTrabajo.cotizacion.estado != 'Cerrado' }"
+						th:href="@{/central-integral-vehicular/editarOrdenDeTrabajo/} + ${ordenTrabajo.id}"><span
+							class="mt-1 material-icons-outlined">border_color</span></a>
+					<a class="btn btn-dark btn-xs" th:if="${ordenTrabajo.cotizacion.estado != 'Cerrado' }"
+						th:href="@{/central-integral-vehicular/eliminarOrdenDeTrabajo/}  + ${ordenTrabajo.id}+@{/} + ${ordenTrabajo.cotizacion.id}"
+						onclick="return confirm('¿Está seguro que desea eliminar?');"><span
+							class="mt-1 material-icons-outlined">person_remove</span></a>
+					<p class="text-danger text-center" th:if="${ordenTrabajo.cotizacion.estado == 'Cerrado'}" >Orden cerrada</p>		
+				</td>
+				
+					
+			</tr>
+
+		</tbody>
+	</table>
+
+	<nav th:replace="paginator-nav :: paginator"></nav>
+
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout:: scripts"></div>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header">
+				<div class="d-flex">
+					<img src="/img/logo.png" alt="" width="250px" class="mr-4 mt-2">
+				
+					<h4 class="ml-5 mt-5">CENTRAL INTEGRAL VEHICULAR S.A.S</h4>			
+				</div>
+				<p class="text-center">NIT:901.319.875-7</p>
+				<strong>
+				<p class="text-end mr-5 text-danger fs-2" th:text="'OT- '+ ${ordenTrabajo.id}"></p>
+				</strong>
+			</div>
+			<div class="card-body">
+
+
+				<table class="table table-bordered  mt-3">
+					<thead>
+						<tr>
+							<th>Datos del Cliente</th>
+							<th colspan="2" class="text-center">Datos del vehiculo</th>
+							<th class="text-center">Datos de la cotización</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="'RAZÓN SOCIAL: ' + ${ordenTrabajo.cotizacion.vehiculo.cliente.razonSocial}"></td>
+
+							<td th:text="'PLACA: ' +${ordenTrabajo.cotizacion.vehiculo.placa}"></td>
+							<td th:text="'KM: ' +${ordenTrabajo.cotizacion.vehiculo.km}"></td>
+							<td colspan="2" th:text="'FECHA Y HORA: '+ ${ordenTrabajo.cotizacion.fecha} + ' ' +${ordenTrabajo.cotizacion.hora}">
+							</td>
+
+						</tr>
+						<tr>
+
+
+							<td th:text="'NIT: ' + ${ordenTrabajo.cotizacion.vehiculo.cliente.nit}"></td>
+							<td th:text="'MARCA: ' + ${ordenTrabajo.cotizacion.vehiculo.marca}"></td>
+							<td th:text="'HORAS: ' +${ordenTrabajo.cotizacion.vehiculo.horas}"></td>
+							<td>
+								<a th:text="'VENCE: '+ ${ordenTrabajo.cotizacion.fechaVencimiento}"
+									th:if="${ordenTrabajo.cotizacion.fechaVencimiento != null}"></a>
+
+								<p th:if="${ordenTrabajo.cotizacion.fechaVencimiento == null} " class="text-danger">
+									VENCE: FECHA NO ESPECIFICADA
+								</p>
+							</td>
+
+
+						</tr>
+						<tr>
+
+							<td th:text="'TELÉFONO: ' +${ordenTrabajo.cotizacion.vehiculo.cliente.telefono}"></td>
+							<td th:text="'COLOR: ' +${ordenTrabajo.cotizacion.vehiculo.color}"></td>
+							<td th:text="'MODELO: ' +${ordenTrabajo.cotizacion.vehiculo.modelo}"></td>
+							<td>
+								<a th:text="'FORMA DE PAGO: '+ ${ordenTrabajo.cotizacion.formaPago}"
+									th:if="${ordenTrabajo.cotizacion.formaPago != 'Sin_seleccionar'}"></a>
+
+								<p th:if="${ordenTrabajo.cotizacion.formaPago == 'Sin_seleccionar'} " class="text-danger">
+									FORMA DE PAGO: NO ESPECIFICADA
+								</p>
+							</td>
+
+						</tr>
+						
+						<tr>
+						<td colspan="4"  class="text-danger" th:text="'FECHA DE SALIDA: '+ ${ordenTrabajo.fechaSalida} ">
+							</td>
+					</tt>
+					</tbody>
+				</table>
+
+
+
+				<div class="alert alert-info my-4"
+					th:if="${#lists.isEmpty(ordenTrabajo.cotizacion.items) && #lists.isEmpty(ordenTrabajo.cotizacion.itemsServicio) }"
+					th:text="'No hay lineas para la cotizacion COT- ' +${cotizacion.id}">
+				</div>
+
+
+				<table class="table table-bordered my-3">
+					<thead class="table-info">
+						<tr>
+							<th class="text-center">Codigo</th>
+							<th>Descripción</th>
+							<th class="text-center">Cantidad</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="linea: ${ordenTrabajo.cotizacion.items}">
+							<td class="text-center" th:text="${linea.articulo.codigo}"></td>
+							<td th:text="${linea.articulo.descripcion}"></td>
+							<td class="text-center" th:text="${linea.cantidad}"></td>
+						
+						</tr>
+						<tr th:each="linea2: ${ordenTrabajo.cotizacion.itemsServicio}">
+							<td class="text-center" th:text="${linea2.servicio.codigo}"></td>
+							<td th:text="${linea2.servicio.descripcion}"></td>
+							<td class="text-center" th:text="${linea2.cantidad}"></td>
+
+						</tr>
+						
+
+
+					</tbody>
+				</table>
+				<p class="text-center"> SOMOS SU ALIADO, BRINDANDO SOLUCIONES </p>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+
+</body>
+
+
+</html>

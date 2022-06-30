@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo10">
+
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<!--BUSCADOR-->
+	<div class="d-flex container col-sm-10 mb-2 ">
+		<div class="col-sm-10 ml-4">
+			<form th:replace="layout/layout :: buscador"></form>
+
+
+		</div>
+
+		<div class="col-12 ml-5">
+			<a th:href="@{/central-integral-vehicular/crearServicio}"><button class="btn btn-light  ">
+					<span class="material-icons-outlined search">person_add</span>
+				</button></a>
+
+		</div>
+	</div>
+	<!--BUSCADOR-->
+	<div class=" container col-sm-12">
+
+
+		<!--SERVICIO-->
+
+		<table class="table crud table-hover justify-content-center container  fs-5">
+			<thead>
+				<tr>
+
+					<th class="col-sm-2">ID</th>
+					<th class="col-xs-1">Descripcion</th>
+					<th class="col-xs-1">Precio</th>
+					<th class=" col-sm-2 text-center">Acción</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr class="table-borderless" th:each="servicio: ${servicio}">
+
+					<td th:text="${servicio.id}" class="text-break"></td>
+					<td th:text="${servicio.descripcion}"></td>
+					<td th:text="${servicio.precio()}" ></td>
+	
+
+					<td class="text-center"><a class="btn btn-dark btn-xs"
+							th:href="@{/central-integral-vehicular/crearServicio/} + ${servicio.id}"><span
+								class="mt-1 material-icons-outlined">border_color</span></a>
+						<a th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'"
+						class="btn btn-dark btn-xs" th:href="@{/central-integral-vehicular/eliminarServicio/} + ${servicio.id}"
+							onclick="return confirm('¿Está seguro que desea eliminar?');"><span
+								class="mt-1 material-icons-outlined">person_remove</span></a>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+		<nav th:replace="paginator-nav :: paginator"></nav>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

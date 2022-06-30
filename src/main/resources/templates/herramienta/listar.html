@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo6">
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="d-flex col-sm-11 mb-2 ml-1">
+		<div class="col-sm-10 ml-4">
+			<form th:replace="layout/layout :: buscador"></form>
+		</div>
+		<div class="col-sm-2 ml-2">
+			<a th:href="@{/central-integral-vehicular/crearHerramienta}"><button class="btn btn-light  ml-2">
+					<span class="material-icons-outlined search">person_add</span>
+				</button></a>
+		</div>
+	</div>
+
+	<table class="table crud table-hover justify-content-center container col-11  fs-5">
+		<thead>
+			<tr>
+				<th class="text-center">ID</th>
+				<th class="col-sm-2">Descripcion</th>
+				<th class="col-sm-1">Marca</th>
+				<th class="text-center">Valor Unitario</th>
+				<th class="col-sm-1">Cantidad</th>
+				<th class="text-center">Valor</th>
+				<th class=" col-sm-1 text-center">IVA %</th>
+				<th class=" col-sm-1 text-center">IVA</th>
+				<th class="text-center">Valor Total</th>
+				<th class=" col-sm-2 text-center" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">Accion</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="table-borderless" th:each="herramienta: ${herramienta}">
+
+				<td th:text="${herramienta.id}" class="text-center"></td>
+				<td th:text="${herramienta.descripcion}"></td>
+				<td th:text="${herramienta.marca}"></td>
+				<td th:text="'$ ' + ${herramienta.valorUnitario()}" class="text-end"></td>
+				<td th:text="${herramienta.cantidad}" class="text-center"></td>
+				<td th:text="'$ ' + ${herramienta.valor()}" class="text-end"></td>
+				<td class="text-center">19</td>
+				<td th:text="'$ ' + ${herramienta.iva()}" class="text-end"></td>
+				<td th:text="'$ ' + ${herramienta.valorTotal()}" class="text-end"></td>
+
+
+				<td class="text-center" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">
+					<a class="btn btn-dark btn-xs"
+						th:href="@{/central-integral-vehicular/crearHerramienta/} + ${herramienta.id}">
+						<span class="mt-1 material-icons-outlined">border_color</span>
+					</a>
+					<a class="btn btn-dark btn-xs"
+						th:href="@{/central-integral-vehicular/eliminarHerramienta/} + ${herramienta.id}"
+						onclick="return confirm('¿Está seguro que desea eliminar?');">
+						<span class="mt-1 material-icons-outlined">person_remove</span>
+					</a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<nav th:replace="paginator-nav :: paginator"></nav>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

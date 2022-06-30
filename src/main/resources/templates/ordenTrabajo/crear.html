@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head">
+
+</head>
+
+<body class="crearfondo">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container col-5 ">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong>Agregar Order de Trabajo</strong></div>
+			<div class="card-body ">
+
+				<form th:action="@{/central-integral-vehicular/crearOrdenDeTrabajo/}" th:object="${ordenTrabajo}" method="post">
+
+
+					<div class=" mt-1">
+						<label class="cc" th:text="'Identificación de la cotización:'"></label>
+						<input th:value="${ordenTrabajo.cotizacion.id}" class="form-control" disabled='disabled'/>
+
+						<input th:field="*{cotizacion.id}" th:value="${ordenTrabajo.cotizacion.id}" class="form-control" hidden />
+					</div>
+
+
+					<div class="mt-1">
+						<label class="col-form-label  ">Fecha de Salida Vehiculo:</label>
+
+						<input type="date" th:field="*{fechaSalida}" class="form-control" />
+					</div>
+
+
+
+					<h4 class="card-title  text-center mt-4">
+
+						<button type="submit"  class="btn"><span
+								class="mt-1 material-icons-outlined">send</span>
+							<p>Enviar</p>
+						</button>
+					</h4>
+
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<br><br><br>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+
+</body>
+
+</html>

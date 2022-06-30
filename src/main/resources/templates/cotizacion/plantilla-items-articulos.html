@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<table th:fragment="itemsCotizacionArticulo" class="d-none">
+
+		<tbody id="plantillaItemsCotizacionArticulo">
+			<!-- Linea 10 recibe el id del articulo -->
+			<tr id="row_articulo_{id}">
+				<td class="d-none">
+					<input type="hidden" value="{id}" name="itemArticulo_id[]" />
+				</td>
+				<td>{codigo}</td>
+				<td>{descripcion}</td>
+				<!-- Un arreglo de las cantidades de cada linea de cotizacion-->
+				<td><input type="number" value="1" name="cantidadArticulo[]" id="cantidadArticulo_{id}" class="form-control "
+						onchange="itemsHelper.calcularImporteArticulo({id}, {precioCompra});" /></td>
+
+				<td class="text-center" id"precioCompra_{id}">{precioCompra}</td>
+
+				<td><input type="text" value="0" name="descuentoArticulo[]" id="descuentoArticulo_{id}" class="form-control "
+						onchange="itemsHelper.calcularImporteArticulo({id}, {precioCompra});" /></td>
+
+				<td><input type="text" value="0" name="ivaArticulo[]" id="ivaArticulo_{id}" class="form-control "
+						onchange="itemsHelper.calcularImporteArticulo({id}, {precioCompra});" /></td>
+
+				<td class="text-center"><span id="ivaLineaArticulo_{id}">0</span></td>
+
+				<td class="text-center"><span id="precio_total_articulo_{id}">0</span></td>
+
+
+
+
+
+				<td class="text-center"><a href="#" class="btn btn-dark btn-xs"
+						onclick="itemsHelper.eliminarLineaCotizacionArticulo({id}); "><span class="material-icons-outlined search">delete</span></a></td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</body>
+
+</html>

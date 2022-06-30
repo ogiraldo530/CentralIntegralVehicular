@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo12">
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container   col-4 py-4">
+		<div class="card">
+			<div class="card-header añadir text-dark text-center"> <strong th:text="${titulo}"></strong></div> 
+			<div class="card-body resto">
+
+				<form th:action="@{/central-integral-vehicular/crearServicio}" th:object="${servicio}" method="post" >
+
+						<div class=" col-12">
+							<label class="col-form-label">Descripción</label>
+							<div >
+								<textarea type="text" th:field="*{descripcion}" class="form-control" id="descripcion"
+									name="descripcion" />
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('descripcion')}"
+									th:errors="*{descripcion}"></small>
+							</div>
+
+						</div>
+
+
+						<div class="col-12">
+							<label class="col-form-label">Precio</label>
+							<div >
+
+								<input type="text" th:field="*{precio}" class="form-control" id="precio"
+									name="precio" />
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('precio')}"
+									th:errors="*{precio}"></small>
+							</div>
+						</div>
+
+
+					<h4 class="card-title mt-3 text-center">
+
+						<button type="submit" class="btn"><span class="mt-1 material-icons-outlined">send</span>
+							<p>Enviar</p>
+						</button>
+					</h4>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

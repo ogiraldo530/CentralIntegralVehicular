@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo">
+
+	<header th:replace="layout/layout :: header"></header>
+	<div class="d-flex container col-sm-10 mb-2 ">
+		<div class="col-sm-10 ml-4">
+
+			<form th:replace="layout/layout :: buscador"></form>
+
+		</div>
+		<div class="col-sm-2 ml-2">
+
+			<a th:href="@{/central-integral-vehicular/crearCliente}"><button class="btn btn-light  ml-2">
+					<span class="material-icons-outlined search">person_add</span>
+				</button></a>
+		</div>
+	</div>
+	<div  class="text-white container" th:unless="${clientes.size}">
+		<h2 th:text="${vacio}"></h2>
+		<small class=" fs-5 text-white" th:text="${vacioInfo}"></small>
+	</div>
+
+	<div th:if="${clientes.size}">
+		<h2  class="container text-white" th:text="${resultados}"></h2>
+	<table class="table crud table-hover justify-content-center container  fs-5">
+		<thead>
+			<tr>
+				<th class="col-sm-1 text-center">Código</th>
+				<th class="col-sm-3">Razón Social</th>
+				<th class="col-sm-2">Nit</th>
+				<th class="col-sm-2">Teléfono</th>
+				<th class="col-sm-1">Agregar Vehiculo</th>
+				<th class=" col-sm-2 text-center">Acción</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="table-borderless" th:each="clientes: ${clientes}">
+
+				<td th:text="${clientes.id}" class="text-center"></td>
+				<td th:text="${clientes.razonSocial}"></td>
+				<td th:text="${clientes.nit}"></td>
+				<td th:text="${clientes.telefono}"></td>
+				<td class="text-center"><a class="btn btn-danger btn-xs"
+						th:href="@{/central-integral-vehicular/crearVehiculo/} + ${clientes.id}"><span
+							class="mt-1 material-icons-outlined">add</span></a>
+
+				</td>
+
+				<td class="text-center"><a class="btn btn-dark btn-xs"
+						th:href="@{/central-integral-vehicular/crearCliente/} + ${clientes.id}"><span
+							class="mt-1 material-icons-outlined">border_color</span></a>
+					<a class="btn btn-dark btn-xs" th:href="@{/central-integral-vehicular/eliminarCliente/} + ${clientes.id}"
+						onclick="return confirm('Está Seguro que Desea Eliminar?');"><span
+							class="mt-1 material-icons-outlined">person_remove</span></a>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	</div>
+
+	<h4 class="card-title mt-5 text-center">
+		<a th:href="@{/central-integral-vehicular/listarCliente}" class="btn btn-light btn-xs mb-5">
+		<span class="material-icons-outlined volver ">reply</span></a>
+	</h4>
+	
+	
+
+
+	</div>
+	<br>
+	<br>
+	<br>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+
+			<div class="card-body">
+
+				<a class="btn btn-dark btn-xs mb-2"
+					th:href="@{'/central-integral-vehicular/verHistorialVehicular/' + ${vehiculo.id}}"
+					th:text="'Historial Vehicular'"></a>
+
+
+				<ul class="list-group">
+					<li class="list-group-item list-group-item-danger" th:text="'Datos del Vehiculo'"></li>
+					<li class="list-group-item" th:text="'Placa: '+ ${vehiculo.placa}"></li>
+
+					<li class="list-group-item" th:text="'Marca: ' + ${vehiculo.marca}"></li>
+					<li class="list-group-item" th:text="'Color: ' + ${vehiculo.color}"></li>
+					<li class="list-group-item" th:text="'Kilometraje: ' + ${vehiculo.km}"></li>
+					<li class="list-group-item" th:text="'Modelo: ' + ${vehiculo.modelo}"></li>
+					<strong>
+						<li class="list-group-item text-danger"
+							th:text="'Propietario: ' + ${vehiculo.cliente.razonSocial}"></li>
+					</strong>
+				</ul>
+				<div th:if="${#lists.isEmpty(vehiculo.cotizaciones)}" class="alert alert-info my-4"
+					th:text="'No hay cotizaciones asignadas para el vehiculo con placa ' + ${vehiculo.placa} "></div>
+
+				<table class="table  table-hover my-4">
+					<thead class="thead-dark" th:if="${not #lists.isEmpty(vehiculo.cotizaciones)}">
+						<tr>
+							<th class="text-center">Código</th>
+							<th class="col-1 text-center">Fecha elaboración</th>
+							<th class="col-1 text-center">Hora elaboración</th>
+							<th class="col-1 text-center">Fecha vencimiento</th>
+							<th class="text-center">Estado</th>
+							<th class="text-center">Orden de trabajo</th>
+							<th class="text-center">Ver</th>
+							<th class="text-center" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">Acción</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cotizacion: ${vehiculo.cotizaciones}">
+							<td class="text-center" th:text="${cotizacion.id}"></td>
+							<td class="text-center" th:text="${cotizacion.fecha}"></td>
+							<td class="text-center" th:text="${cotizacion.hora}"></td>
+							<td class="text-center">
+								<a th:text="${cotizacion.fechaVencimiento}"
+									th:if="${cotizacion.fechaVencimiento != null}"></a>
+
+								<p th:if="${cotizacion.fechaVencimiento == null} " class="text-info">
+									Fecha sin seleccionar
+								</p>
+							</td>
+							<td class="text-center" th:text="${cotizacion.estado}"></td>
+
+							<td class="text-center"><a th:if="${cotizacion.estado == 'Abierto'} "
+									class="btn btn-dark  btn-xs"
+									th:href="@{'/central-integral-vehicular/crearOrdenDeTrabajo/' + ${cotizacion.id}}"
+									th:text="'Enviar'"
+									onclick="return confirm('¿Estas seguro que deseas enviar como orden de trabajo?');"></a>
+								<p th:if="${cotizacion.estado == 'Enviado'}" class="text-primary"> Orden enviada</p>
+								<p th:if="${cotizacion.estado == 'Cerrado'}" class="text-danger"> Orden cerrada</p>
+
+							</td>
+
+
+							<td class="text-center"><a class="btn btn-danger btn-xs"
+									th:href="@{'/central-integral-vehicular/verCotizacion/' + ${cotizacion.id}}"
+									th:text="'Detalle'"></a>
+							</td>
+
+							<td class="text-center" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">
+
+								<a class="btn btn-dark btn-xs"
+									th:if="${cotizacion.estado == 'Abierto' || cotizacion.estado == 'Enviado'} "
+									th:href="@{/central-integral-vehicular/editarCotizacion/} + ${cotizacion.id}"><span
+										class="mt-1 material-icons-outlined">border_color</span></a>
+
+								<a class="btn btn-dark btn-xs" th:if="${cotizacion.estado == 'Cerrado'}"
+									th:href="@{/central-integral-vehicular/eliminarCotizacion/}  + ${cotizacion.id}+@{/} + ${vehiculo.id}"
+									onclick="return confirm('¿Está seguro que desea eliminar?');"><span
+										class="mt-1 material-icons-outlined">person_remove</span></a>
+
+								<a class="btn btn-danger btn-xs"
+									th:if="${cotizacion.estado == 'Abierto' || cotizacion.estado == 'Enviado'} "
+									th:href="@{/central-integral-vehicular/eliminarCotizacion/}  + ${cotizacion.id}+@{/} + ${vehiculo.id}"
+									onclick="return confirm('¿Está seguro que desea eliminar?');"><span
+										class="mt-1 material-icons-outlined">person_remove</span></a>
+
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+
+			</div>
+
+
+		</div>
+
+	</div>
+	<footer class="bg-light">
+		<div class="container">
+			<div class="row py-4">
+				<div class="col-12 text-center">
+					<a style="text-decoration: none" class="text-dark fw-bold">©
+						2021 Copyright: </a>
+					<a style="text-decoration: none">Orlando Steven Giraldo Barrera</a>
+
+					<p class=" mt-2">
+				
+					 <a style="text-decoration: none" class="text-dark fw-bold">Powered by: </a> 
+						 <a href="https://spring.io/tools" >Spring
+					Boot, </a><a href="https://getbootstrap.com/docs/5.1/getting-started/introduction/" >Bootstrap</a> & <a href="https://www.thymeleaf.org/">Thymeleaft</a>
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</footer>
+	<div th:replace="layout/layout :: scripts"></div>
+	<script th:replace="cotizacion/js/autocomplete-items :: javascriptArticulo"> </script>
+
+
+</body>
+
+</html>

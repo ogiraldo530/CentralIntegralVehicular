@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body class="fondo5">
+
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<!--BUSCADOR-->
+	<div class="d-flex  mb-2 mt-2 ">
+		<div class="col-sm-10 input-group">
+			<form th:replace="layout/layout :: buscador"></form>
+
+			<div class="col-sm-4 mr-5 ">
+
+				<a th:href="@{/central-integral-vehicular/listarArticulo}" class="btn btn-light card-text ">
+				<i class="bi bi-clipboard-check"></i>
+					Articulo</a>
+				<a th:href="@{/central-integral-vehicular/listarEntradaArticulo}" class="btn btn-light card-text botontab active" >
+				<i class="bi bi-clipboard-plus"></i>
+					Entrada</a>
+				<a th:href="@{/central-integral-vehicular/listarSalidaArticulo}" class="btn btn-light card-text">
+				<i class="bi bi-clipboard-minus"></i>
+					Salida</a>
+
+			</div>
+
+		</div>
+
+		<div class="col-1 ml-5">
+			<a th:href="@{/central-integral-vehicular/crearEntradaArticulo}"><button class="btn btn-light  ">
+					<span class="material-icons-outlined search">person_add</span>
+				</button></a>
+
+		</div>
+	</div>
+	<!--BUSCADOR-->
+	<div class=" container col-sm-12">
+
+		<!--ARTICULO-->
+
+	
+	<table class="table crud table-hover justify-content-center container col-12 fs-5 mt-2">
+		<thead>
+			<tr>
+
+				<th class=" col-sm-2 text-center">Fecha</th>
+				<th class="col-sm-1 text-center">Codigo</th>
+				<th class="col-sm-3 text-center">Descripcion</th>
+				<th class="col-sm-1">Categoria</th>
+				<th class="col-sm-2 text-center">Responsable</th>
+				<th class=" col-sm-1 text-center">Cantidad</th>
+
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="table-borderless" th:each="entradaArticulo: ${entradaArticulo}">
+
+				<td th:text="${entradaArticulo.fecha}" class="text-center"></td>
+				<td class="text-center" th:text="${entradaArticulo.articulo.id}"></td>
+				<td class="text-center" th:text="${entradaArticulo.articulo.descripcion}"></td>
+				<td class="text-center" th:text="${entradaArticulo.articulo.categoria}"></td>
+				<td class="text-center" th:text="${entradaArticulo.responsable}"></td>
+				<td class="text-center" th:text="${entradaArticulo.cantidad}"></td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+
+		<nav th:replace="paginator-nav :: paginator"></nav>
+	</div>
+
+
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<div th:replace="layout/layout :: scripts"></div>
+</body>
+
+</html>

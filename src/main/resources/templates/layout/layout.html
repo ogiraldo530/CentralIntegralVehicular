@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title th:text="${titulo}"></title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Material+Icons+Outlined' rel='stylesheet'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+		integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/static.css}">
+
+	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+
+
+</head>
+
+<body th:fragment="body">
+	<header class="header" id="header">
+
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fs-5   fixed-top menu ">
+			<div class="container">
+				<a class="navbar-brand logo" href="#"><img src="/img/logo.png" alt="" width="250px"></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+					aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="nav nav-tabs ml-auto navv">
+						<li class="nav-item">
+
+
+							<a class="nav-link  text-dark" aria-current="page" th:href="@{/menu}">Menú <span
+									class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item" th:if="${session.usuario.rol.nombre}=='ADMINISTRADOR'">
+							<a class="nav-link text-dark"
+								th:href="@{/central-integral-vehicular/listarUsuario}">Usuario</a>
+						</li>
+						<li class="nav-item ">
+							<a class="nav-link text-dark"
+								th:href="@{/central-integral-vehicular/listarCliente}">Cliente</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link text-dark"
+								th:href="@{/central-integral-vehicular/listarVehiculo}">Vehículo</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link text-dark"
+								th:href="@{/central-integral-vehicular/listarOrdenDeTrabajo}">Orden de Trabajo</a>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								Inventario
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item"
+										th:href="@{/central-integral-vehicular/listarHerramienta}">Herramientas </a>
+								</li>
+								<li><a class="dropdown-item"
+										th:href="@{/central-integral-vehicular/listarArticulo}">Artículos</a></li>
+								<li><a class="dropdown-item"
+										th:href="@{/central-integral-vehicular/listarServicio}">Servicios</a></li>
+							</ul>
+
+						<li>
+							<form class="mt-1 ml-2" th:action="@{/logout}" method="post"><button type="submit"
+									class="botonlogout"> <span
+										class=" material-icons-outlined mt-2">logout</span></button></form>
+						</li>
+
+
+						</li>
+
+
+
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+
+		<br>
+		<br>
+		<br>
+		
+		<br>
+		<br th:if="${(titulo != 'Menu')}">
+		<br th:if="${(titulo != 'Menu')}">
+		<br th:if="${(titulo == 'Menu') && (session.usuario.rol.nombre =='ASISTENTE')}">
+		<br th:if="${(titulo == 'Menu') && (session.usuario.rol.nombre =='ASISTENTE')}">
+		
+		<div class="alert alert-danger alert-dismissible fade show col-4 text-center mx-auto" role="alert"
+			th:if="${danger != null}">
+			<p th:text="${danger}"></p>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		<div class="alert alert-success alert-dismissible fade show col-3 text-center mx-auto" role="alert"
+			th:if="${success != null}">
+			<p th:text="${success}"></p>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		<div class="alert alert-danger alert-dismissible fade show col-3 text-center mx-auto" role="alert"
+			th:if="${error != null}">
+			<p th:text="${error}"></p>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+
+
+	</header>
+
+	<form th:fragment="buscador" th:action="@{'/central-integral-vehicular/'+${accion}+'/busqueda'}">
+		<div class="d-flex">
+			<div class="form-outline">
+
+				<input type="search" placeholder="Buscar..." name="query" class="form-control form-control" />
+
+			</div>
+			<div>
+				<button type="submit" class="btn btn-light ml-2  ">
+					<span class="material-icons-outlined search">person_search</span>
+				</button>
+
+			</div>
+		</div>
+	</form>
+
+	<!-- Footer -->
+	<footer class="bg-light fixed-bottom">
+		<div class="container">
+			<div class="row py-4">
+				<div class="col-12 text-center">
+					<a style="text-decoration: none" class="text-dark fw-bold">©
+						2021 Copyright: </a>
+					<a style="text-decoration: none">Orlando Steven Giraldo Barrera</a>
+
+			<br>
+					 <a style="text-decoration: none" class="text-dark fw-bold">Powered by: </a> 
+						 <a href="https://spring.io/tools" >Spring
+					Boot, </a><a href="https://www.freepik.es"> Freepik, </a><a href="https://getbootstrap.com/docs/5.1/getting-started/introduction/" >Bootstrap</a> & <a href="https://www.thymeleaf.org/">Thymeleaft</a>
+					
+				
+					
+				</div>
+			</div>
+		</div>
+
+	</footer>
+	<!-- Footer -->
+
+	<div th:fragment="scripts">
+
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
+
+
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<script type="text/javascript" th:fragment="javascriptArticulo">
+
+		var ivaArticulo = 0;
+		var ivaServicio = 0;
+
+
+
+		$(document).ready(function () {
+
+
+			$("#buscar_servicio").autocomplete({
+
+				source: function (request, response) {
+					$.ajax({
+
+						url: "/central-integral-vehicular/cargar-servicios/" + request.term,
+						dataType: "json",
+						data: {
+							term: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									value: item.id,
+									label: item.descripcion,
+									codigo: item.codigo,
+									precio: item.precio,
+
+
+								};
+							}));
+						},
+
+					});
+				},
+
+				select: function (event, ui) {
+					//$("#buscar_servicio").val(ui.item.label);
+
+					if (itemsHelperServicio.hasServicio(ui.item.value)) {
+
+						itemsHelperServicio.incrementaCantidad(ui.item.value, ui.item.precio);
+						return false;
+
+					}
+
+					var linea = $("#plantillaItemsCotizacionServicio").html();
+
+					//La variable linea guarda los atributos que se van a mostrar en cada linea de la tabla itemsCotizacion
+
+					linea = linea.replace(/{id}/g, ui.item.value);
+					linea = linea.replace(/{codigo}/g, ui.item.codigo);
+					linea = linea.replace(/{descripcion}/g, ui.item.label);
+					linea = linea.replace(/{precio}/g, ui.item.precio);
+
+
+					//Cargar los atributos en la vista
+					$("#cargarItemServicio tbody").append(linea);
+
+					itemsHelperServicio.calcularImporte(ui.item.value, ui.item.precio);
+
+
+					return false;
+
+				}
+			});
+
+			$("#buscar_articulo").autocomplete({
+
+				source: function (request, response) {
+					$.ajax({
+
+						url: "/central-integral-vehicular/cargar-articulos/" + request.term,
+						dataType: "json",
+						data: {
+							term: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									value: item.id,
+									label: item.descripcion,
+									codigo: item.codigo,
+									precioCompra: item.precioCompra,
+
+
+								};
+							}));
+						},
+
+					});
+				},
+
+				select: function (event, ui) {
+					//$("#buscar_articulo").val(ui.item.label);
+
+					if (itemsHelper.hasArticulo(ui.item.value)) {
+
+						itemsHelper.incrementaCantidad(ui.item.value, ui.item.precioCompra);
+						return false;
+
+					}
+
+					var linea = $("#plantillaItemsCotizacionArticulo").html();
+
+					//La variable linea guarda los atributos que se van a mostrar en cada linea de la tabla itemsCotizacion
+
+					linea = linea.replace(/{id}/g, ui.item.value);
+					linea = linea.replace(/{codigo}/g, ui.item.codigo);
+					linea = linea.replace(/{descripcion}/g, ui.item.label);
+					linea = linea.replace(/{precioCompra}/g, ui.item.precioCompra);
+
+
+					//Cargar los atributos en la vista
+					$("#cargarItemArticulos tbody").append(linea);
+
+					itemsHelper.calcularImporteArticulo(ui.item.value, ui.item.precioCompra);
+
+					return false;
+
+				}
+			});
+
+			$("form").submit(function () {
+				$("#plantillaItemsCotizacionArticulo").remove();
+				$("#plantillaItemsCotizacionServicio").remove();
+				return;
+			});
+
+		});
+
+		var itemsHelper = {
+
+			calcularImporteArticulo: function (id, precioCompra) {
+				let cantidad = document.getElementById("cantidadArticulo_" + id).value;
+
+				if (cantidad == null) {
+					cantidad = 1;
+				}
+
+				let descuento = document.getElementById("descuentoArticulo_" + id).value;
+
+				if (descuento == null) {
+					descuento = 0;
+				}
+
+				let iva = document.getElementById("ivaArticulo_" + id).value;
+
+				if (iva == null) {
+					iva = 0;
+				}
+
+
+				let subtotal = itemsHelper.subTotal(precioCompra, cantidad);
+				let vlrDescuento = itemsHelper.vlrDescuento(precioCompra, cantidad, descuento);
+				let vlrIva = itemsHelper.vlrIva(precioCompra, cantidad, iva);
+
+				//para pruebas
+				//console.log("cantidad: " + cantidad);
+				console.log("descuento: " + vlrDescuento);
+				console.log("vlrIva: " + vlrIva);
+				//console.log("precio: " + precioCompra);
+
+				itemsHelper.mostrarIvaArticulo(id, vlrIva);
+
+
+				$("#precio_total_articulo_" + id).html(parseFloat(subtotal) - parseFloat(vlrDescuento));
+
+				this.calcularGranTotalArticulo();
+
+
+			},
+
+			subTotal: function (precioCompra, cantidad) {
+
+				let subTotal = (parseFloat(precioCompra) * parseFloat(cantidad));
+				return subTotal;
+
+			},
+			vlrDescuento: function (precioCompra, cantidad, descuento) {
+
+				let subTotal = itemsHelper.subTotal(precioCompra, cantidad);
+
+				let vlrDescuento = (subTotal * descuento) / 100;
+
+				return vlrDescuento;
+
+			},
+			vlrIva: function (precioCompra, cantidad, iva) {
+				let subTotal = itemsHelper.subTotal(precioCompra, cantidad);
+
+				let vlrIva = (subTotal * iva) / 100;
+				return vlrIva;
+
+
+			},
+			mostrarIvaArticulo: function (id, vlrIva) {
+
+				$("#ivaLineaArticulo_" + id).html(vlrIva);
+
+				this.calcularGranTotalArticulo();
+
+
+			},
+
+
+			//Este metodo es para verificar si el producto ya se encuentra en una de las lineas 
+			hasArticulo: function (id) {
+
+				var resultado = false;
+
+				$('input[name="itemArticulo_id[]"]').each(function () {
+					if (parseInt(id) == parseInt($(this).val())) {
+						resultado = true;
+					}
+
+				});
+				return resultado;
+			},
+			incrementaCantidad: function (id, precioCompra) {
+				var cantidad = $("#cantidadArticulo_" + id).val() ? parseInt($("#cantidadArticulo_" + id).val()) : 0;
+				$("#cantidadArticulo_" + id).val(++cantidad);
+				this.calcularImporte(id, precioCompra);
+			},
+			eliminarLineaCotizacionArticulo: function (id) {
+
+				$("#row_articulo_" + id).remove();
+				this.calcularGranTotalArticulo();
+			},
+
+			calcularGranTotalArticulo: function () {
+
+				var totalIva = 0;
+				$('span[id^="ivaLineaArticulo_"]').each(function () {
+					totalIva += parseFloat($(this).html());
+				});
+				console.log("total Iva: " + totalIva);
+				$('#iva_total_articulo').html(totalIva);
+
+
+				var total = 0;
+				$('span[id^="precio_total_articulo_"]').each(function () {
+					total += parseFloat($(this).html());
+				});
+
+				console.log("total : " + total);
+				$('#gran_total_articulo').html(total);
+
+				itemsHelperTotal.calcularTotalNeto();
+			}
+
+		}
+
+		var itemsHelperServicio = {
+
+			calcularImporte: function (id, precio) {
+				let cantidad = document.getElementById("cantidadServicio_" + id).value;
+
+				if (cantidad == null) {
+					cantidad = 1;
+				}
+
+				let descuento = document.getElementById("descuentoServicio_" + id).value;
+
+				if (descuento == null) {
+					descuento = 0;
+				}
+
+				let iva = document.getElementById("ivaServicio_" + id).value;
+
+				if (iva == null) {
+					iva = 0;
+				}
+
+				let subtotal = itemsHelperServicio.subTotal(precio, cantidad);
+				let vlrDescuento = itemsHelperServicio.vlrDescuento(precio, cantidad, descuento);
+				let vlrIva = itemsHelperServicio.vlrIva(precio, cantidad, iva);
+
+				//para pruebas
+				//console.log("cantidad: " + cantidad);
+				console.log("descuento: " + vlrDescuento);
+				console.log("iva: " + vlrIva);
+				//console.log("precio: " + precio);
+
+				itemsHelperServicio.mostrarIvaServicio(id, vlrIva);
+
+				$("#precio_total_servicio_" + id).html(parseFloat(subtotal) - parseFloat(vlrDescuento));
+
+				this.calcularGranTotalServicio();
+
+
+			},
+
+			subTotal: function (precio, cantidad) {
+
+				let subTotal = (parseFloat(precio) * parseFloat(cantidad));
+				return subTotal;
+
+			},
+			vlrDescuento: function (precio, cantidad, descuento) {
+
+				let subTotal = itemsHelperServicio.subTotal(precio, cantidad);
+
+				let vlrDescuento = (subTotal * descuento) / 100;
+
+				return vlrDescuento;
+
+			},
+			vlrIva: function (precio, cantidad, iva) {
+				let subTotal = itemsHelperServicio.subTotal(precio, cantidad);
+
+				let vlrIva = (subTotal * iva) / 100;
+				return vlrIva;
+
+
+			},
+
+			mostrarIvaServicio: function (id, vlrIva) {
+
+				$("#ivaLineaServicio_" + id).html(vlrIva);
+
+				this.calcularGranTotalServicio();
+
+			},
+
+			//Este metodo es para verificar si el producto ya se encuentra en una de las lineas 
+			hasServicio: function (id) {
+
+				var resultado = false;
+
+				$('input[name="itemServicio_id[]"]').each(function () {
+					if (parseInt(id) == parseInt($(this).val())) {
+						resultado = true;
+					}
+
+				});
+				return resultado;
+			},
+			incrementaCantidad: function (id, precio) {
+				var cantidad = $("#cantidadServicio_" + id).val() ? parseInt($("#cantidadServicio_" + id).val()) : 0;
+				$("#cantidadServicio_" + id).val(++cantidad);
+				this.calcularImporte(id, precio);
+			},
+			eliminarLineaCotizacionServicio: function (id, precioCompra) {
+
+				$("#row_servicio_" + id).remove();
+				this.calcularGranTotalServicio();
+			},
+
+			calcularGranTotalServicio: function () {
+
+				var totalIva = 0;
+				$('span[id^="ivaLineaServicio_"]').each(function () {
+					totalIva += parseFloat($(this).html());
+				});
+				console.log("total Iva: " + totalIva);
+				$('#iva_total_servicio').html(totalIva);
+
+				var total = 0;
+				$('span[id^="precio_total_servicio_"]').each(function () {
+					total += parseFloat($(this).html());
+				});
+
+				console.log("total : " + total);
+				$('#gran_total_servicio').html(total);
+
+				itemsHelperTotal.calcularTotalNeto();
+
+			}
+
+		}
+
+		var itemsHelperTotal = {
+
+			calcularTotalNeto: function () {
+				let sumaTotal = 0;
+
+				let totalServicio = $('#gran_total_servicio').text();
+				let totalArticulo = $('#gran_total_articulo').text();
+
+				sumaTotal = (parseFloat(totalServicio) + parseFloat(totalArticulo));
+
+				$('#valor_neto').html(sumaTotal);
+
+				let sumaIva = 0;
+
+				let ivaServicio = $('#iva_total_servicio').text();
+				let ivaArticulo = $('#iva_total_articulo').text();
+
+				sumaIva = (parseFloat(ivaServicio) + parseFloat(ivaArticulo));
+
+				$('#iva_neto').html(sumaIva);
+
+				itemsHelperTotal.totalPagar();
+
+
+			},
+
+			totalPagar: function () {
+				let sumaGranTotal = 0;
+
+				let iva_neto = $('#iva_neto').text();
+				let valor_neto = $('#valor_neto').text();
+
+				sumaGranTotal = (parseFloat(iva_neto) + parseFloat(valor_neto));
+
+				$('#total_pagar').html(sumaGranTotal);
+
+			}
+		}
+
+
+	</script>
+
+</body>
+
+</html>

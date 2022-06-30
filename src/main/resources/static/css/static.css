@@ -1,0 +1,30 @@
+.menu{font-family:  'Exo 2', sans-serif; }
+.fondo {background-image: url("/img/fondo.jpg");}
+.crearfondo {background-image: url("/img/fondo2.jpg");}
+/*.fondo {background: linear-gradient(rgb(229, 219, 255), rgb(255, 255, 255));}*/
+.crud{background: rgba(255, 255, 255, .7);box-shadow: 1px 1px 1px rgb(192, 192, 192);font-family: 'Source Sans Pro', sans-serif;}
+.crudd{background: rgba(188, 36, 60);font-family: 'Source Sans Pro', sans-serif;}
+.cruddd{background: rgb(0, 0, 0);font-family: 'Source Sans Pro', sans-serif;}
+.search{font-size: 20px;}
+.volver{font-size: 25px;}
+.navv li{margin-left: 6px;}
+.formulariocrear{background: rgba(255, 255, 255, .7);}
+.fondo3 {background-image: url("/img/fondo3.jpg");}
+.botonlogout{border: none;background: none;}
+.tablerelative{position: absolute;}
+ .active.botontab{background-color: rgb(188, 36, 60) !important;
+ color:white !important;}
+ .fondo4 {background-image: url("/img/fondo4.jpg");}
+.fondo5 {background-image: url("/img/fondo5.jpg");}
+.fondo6 {background-image: url("/img/fondo6.jpg");}
+.fondo7 {background-image: url("/img/fondo7.jpg");}
+.fondo8 {background-image: url("/img/fondo8.jpg");}
+.fondo9 {background-image: url("/img/fondo9.jpeg");}
+.fondo10 {background-image: url("/img/fondo9.jpg");}
+.fondo11 {background-image: url("/img/fondo10.jpg");}
+.fondo12 {background-image: url("/img/fondo12.jpg");}
+.fondo13 {background-image: url("/img/fondo13.jpg");}
+.fondo14 {background-image: url("/img/fondo14.jpg");}
+.fondo15 {background-image: url("/img/fondo15.jpg");}
+.cc{margin-top: 5px;}
+.alerta{margin-top:110px;}
